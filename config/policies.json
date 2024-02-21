@@ -1,0 +1,39 @@
+{
+  "policies": [
+    {
+      "handler": {
+        "export": "default",
+        "module": "$import(./modules/split)",
+        "options": {
+          "splitPercent": "$env(SPLIT_PERCENT)"
+        }
+      },
+      "name": "set-split",
+      "policyType": "custom-code-inbound"
+    },
+    {
+      "handler": {
+        "export": "default",
+        "module": "$import(./modules/split-add-header)"
+      },
+      "name": "use-set-header-if-split",
+      "policyType": "custom-code-inbound"
+    },
+    {
+      "handler": {
+        "export": "SetHeadersInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "headers": [
+            {
+              "name": "is-split",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "name": "set-is-split-header",
+      "policyType": "set-headers-inbound"
+    }
+  ]
+}
